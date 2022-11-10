@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="https://siga.arcoconsultoria.com/SIGA/libsiga/plugins/jquery-ui/jquery-ui.min.css">
     <link rel="stylesheet" href="https://siga.arcoconsultoria.com/SIGA/libsiga/css/style.min.css">
     <link rel="stylesheet" href="https://siga.arcoconsultoria.com/SIGA/libsiga/css/main.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="https://siga.arcoconsultoria.com/SIGA/libsiga/plugins/datatables/datatables.min.css">
     <link rel="stylesheet" href="https://siga.arcoconsultoria.com/SIGA/libsiga/plugins/bootstrap/css/bootstrap5Min.css">
     <title>Document</title>
@@ -30,53 +32,133 @@
         #d_select {
             display: inline-block;
         }
+
+        #d_select select {
+            border: solid 1px lightgray;
+            border-radius: 5px;
+            height: 28px;
+        }
+
+        input {
+            border: solid 1px lightgray;
+            border-radius: 5px;
+        }
+
+        .col-2 {
+            display: inline-block;
+        }
+
+        #btn_buscar {
+            padding: 5px 10px;
+            position: absolute;
+            right: 15px;
+            top: 10px;
+        }
+
+        #btn_buscar i {
+            font-size: 15px;
+        }
     </style>
 </head>
 
 <body>
-    <div class="container justify-content-center">
-        <div class="row col-11" style="position: fixed;">
-            <div class="card col-12" id="card_1">
-                <div class="col-4" id="d_input_ccn">
-                    <input style="width: 100%;" type="text" placeholder="CNPJ / CPF / NOME">
-                </div>
-                <div class="col-3" id="d_select">
-                    <select name="" id="uf">
-                        <option value="AC">Acre</option>
-                        <option value="AL">Alagoas</option>
-                        <option value="AP">Amapá</option>
-                        <option value="AM">Amazonas</option>
-                        <option value="BA">Bahia</option>
-                        <option value="CE">Ceará</option>
-                        <option value="DF">Distrito Federal</option>
-                        <option value="ES">Espírito Santo</option>
-                        <option value="GO">Goiás</option>
-                        <option value="MA">Maranhão</option>
-                        <option value="MT">Mato Grosso</option>
-                        <option value="MS">Mato Grosso do Sul</option>
-                        <option value="MG">Minas Gerais</option>
-                        <option value="PA">Pará</option>
-                        <option value="PB">Paraíba</option>
-                        <option value="PR">Paraná</option>
-                        <option value="PE">Pernambuco</option>
-                        <option value="PI">Piauí</option>
-                        <option value="RJ">Rio de Janeiro</option>
-                        <option value="RN">Rio Grande do Norte</option>
-                        <option value="RS">Rio Grande do Sul</option>
-                        <option value="RO">Rondônia</option>
-                        <option value="RR">Roraima</option>
-                        <option value="SC">Santa Catarina</option>
-                        <option value="SP">São Paulo</option>
-                        <option value="SE">Sergipe</option>
-                        <option value="TO">Tocantins</option>
-                    </select>
+    <div class="container">
+        <div class="justify-content-center">
+            <div class="row col-11" style="display: block;">
+                <div class="card col-12" id="card_1">
+                    <div class="col-4" id="d_input_ccn">
+                        <input style="width: 100%;" type="text" placeholder="CNPJ / CPF / NOME">
+                    </div>
+                    <div class="col-2" id="d_select">
+                        <select name="" id="uf">
+                            <option value="">UF</option>
+                            <option value="AC">Acre</option>
+                            <option value="AL">Alagoas</option>
+                            <option value="AP">Amapá</option>
+                            <option value="AM">Amazonas</option>
+                            <option value="BA">Bahia</option>
+                            <option value="CE">Ceará</option>
+                            <option value="DF">Distrito Federal</option>
+                            <option value="ES">Espírito Santo</option>
+                            <option value="GO">Goiás</option>
+                            <option value="MA">Maranhão</option>
+                            <option value="MT">Mato Grosso</option>
+                            <option value="MS">Mato Grosso do Sul</option>
+                            <option value="MG">Minas Gerais</option>
+                            <option value="PA">Pará</option>
+                            <option value="PB">Paraíba</option>
+                            <option value="PR">Paraná</option>
+                            <option value="PE">Pernambuco</option>
+                            <option value="PI">Piauí</option>
+                            <option value="RJ">Rio de Janeiro</option>
+                            <option value="RN">Rio Grande do Norte</option>
+                            <option value="RS">Rio Grande do Sul</option>
+                            <option value="RO">Rondônia</option>
+                            <option value="RR">Roraima</option>
+                            <option value="SC">Santa Catarina</option>
+                            <option value="SP">São Paulo</option>
+                            <option value="SE">Sergipe</option>
+                            <option value="TO">Tocantins</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <button class="btn btn-success" id="btn_buscar">Buscar&nbsp&nbsp&nbsp<i
+                                class="material-symbols-outlined">search</i></button>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            
+        <div class="justify-content-center">
+            <div class="row col-11" style="display: block;">
+                <div class="card">
+                    <div class="col-12">
+                        <table class="table" id="tabela_pr">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="th_table">#</th>
+                                    <th scope="col" class="th_table">Nome</th>
+                                    <th scope="col" class="th_table">CNPJ / CPF</th>
+                                    <th scope="col" class="th_table">Telefone</th>
+                                    <th scope="col" class="th_table">Email</th>
+                                    <th scope="col" class="th_table">Observação</th>
+                                </tr>
+                            </thead>
+                            <tbody id="body_table">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <script>
+        window.onload = () => {
+            table_exec();
+        }
+        table_exec = () => {
+            j('#tabela_pr').DataTable();
+            j('#tabela_pr').DataTable().clear();
+            j('#tabela_pr').DataTable().rows().invalidate().draw();
+            j('#tabela_pr').DataTable().destroy();
+            var tabela_default_order = [0, "asc"];
+            var table = j('#tabela_pr').DataTable({
+                fixedHeader: true,
+                "autoWidth": false,
+                "order": [tabela_default_order],
+                "ordering": true,
+                "scrollX": false,
+                "scrollY": "60vh",
+                "scrollCollapse": false,
+                "paging": true,
+
+                "language": datatable_pt_br,
+                "lengthMenu": [[10, 25, 50, 100], [10, 25, 50, 100]],
+                "pageLength": 10,
+            });
+        }
+    </script>
 
     <!-- Jquery Core Js -->
     <script src="https://siga.arcoconsultoria.com/SIGA/libsiga/plugins/jquery/jquery.min.js"></script>
