@@ -19,6 +19,10 @@
     <link rel="stylesheet" href="https://siga.arcoconsultoria.com/SIGA/libsiga/plugins/bootstrap/css/bootstrap5Min.css">
     <title>Document</title>
     <style>
+        body {
+            overflow-y: hidden;
+        }
+
         #card_1 {
             display: inline-block;
             margin-top: 10px;
@@ -48,6 +52,14 @@
             display: inline-block;
         }
 
+        textarea {
+            width: 100%;
+            height: 150px;
+            border-radius: 10px;
+            max-height: 265px;
+            min-height: 100px;
+        }
+
         #btn_buscar {
             padding: 5px 10px;
             position: absolute;
@@ -57,6 +69,31 @@
 
         #btn_buscar i {
             font-size: 15px;
+        }
+
+        #obs_modal,
+        #obs_modal_2 {
+            z-index: 99999;
+            position: absolute;
+            top: 25%;
+        }
+
+        .col-1 {
+            display: inline-block;
+            margin-right: 65px;
+            margin-bottom: 10px;
+        }
+
+        #btns_acoes {
+            float: right;
+        }
+
+        #btns_acoes_2 {
+            float: right;
+        }
+
+        button {
+            border-radius: 7px !important;
         }
     </style>
 </head>
@@ -133,9 +170,53 @@
         </div>
     </div>
 
+    <button class="btn btn-success" onclick="visibilidadeModal('obs_modal', 'block')">teste</button>
+
+    <div class="modal" id="obs_modal" style="display: block;">
+        <div class="row justify-content-center">
+            <div class="card col-6">
+                <div class="justify-content-center">
+                    <label for="">Informe a Observação</label>
+                </div>
+                <div class="col-12">
+                    <textarea name="" id="textareaInput" cols="" rows=""></textarea>
+                </div>
+                <div class="col-12">
+                    <div class="col-3" id="btns_acoes">
+                        <div class="col-1"><button class="btn btn-danger"
+                                onclick="visibilidadeModal('obs_modal', 'none')">Cancelar</button></div>
+                        <div class="col-1"><button class="btn btn-success">Salvar</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="obs_modal_2">
+        <div class="row justify-content-center">
+            <div class="card col-6">
+                <div class="justify-content-center">
+                    <label for="">Observação</label>
+                </div>
+                <div class="col-12">
+                    <textarea name="" id="textareaOutput" cols="" rows=""></textarea>
+                </div>
+                <div class="col-12">
+                    <div class="col-1" id="btns_acoes_2">
+                        <button class="btn btn-danger"
+                            onclick="visibilidadeModal('obs_modal_2', 'none')">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="text" id="id_oficina">
+
     <script>
         window.onload = () => {
             table_exec();
+            document.getElementById('id_oficina').style.display = 'none';
         }
         table_exec = () => {
             j('#tabela_pr').DataTable();
@@ -158,6 +239,23 @@
                 "pageLength": 10,
             });
         }
+
+        function visibilidadeModal(id, visibilidade, ofiID) {
+            document.getElementById(id).style.display = visibilidade;
+            if(ofiID != null){
+                document.getElementById('id_oficina').value = ofiID;
+            }
+            if(visibilidade == 'none'){
+                document.getElementById('id_oficina').value = null;
+            }
+        }
+
+        function salvarObs() {
+            let v = document.getElementById('textareaInput').value;
+            let id = document.getElementById('id_oficina').value
+            parent.ebfFlowExecute('', parent.ebfListParamsCreate(v, id))
+        }
+
     </script>
 
     <!-- Jquery Core Js -->
