@@ -95,6 +95,30 @@
         button {
             border-radius: 7px !important;
         }
+
+        th {
+            justify-content: center !important;
+        }
+
+        .btn_view_obs {
+            border: none;
+            padding: 0;
+            background-color: rgba(0, 0, 0, 0);
+            font-size: 15px;
+        }
+
+        .btn_view_obs i {
+            color: rgb(82, 0, 182);
+            font-size: 22px;
+            padding: 5px;
+        }
+
+        .btn_view_obs i:hover {
+
+            border-radius: 15px;
+            background-color: rgb(248, 248, 248) !important;
+            color: blue;
+        }
     </style>
 </head>
 
@@ -161,8 +185,8 @@
                                 </tr>
                             </thead>
                             <tbody id="body_table">
-
                             </tbody>
+
                         </table>
                     </div>
                 </div>
@@ -170,9 +194,30 @@
         </div>
     </div>
 
+    <div class="modal" id="obs_modal_3" style="display: block;">
+        <div class="row justify-content-center">
+            <div class="card col-11">
+                <div class="col-12">
+                    <table class="table" id="tabela_pr_2">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="th_table">#</th>
+                                <th scope="col" class="th_table">Data</th>
+                                <th scope="col" class="th_table">Usuario</th>
+                                <th scope="col" class="th_table">Observação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="body_table_2">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <button class="btn btn-success" onclick="visibilidadeModal('obs_modal', 'block')">teste</button>
 
-    <div class="modal" id="obs_modal" style="display: block;">
+    <div class="modal" id="obs_modal">
         <div class="row justify-content-center">
             <div class="card col-6">
                 <div class="justify-content-center">
@@ -215,9 +260,17 @@
 
     <script>
         window.onload = () => {
-            table_exec();
+            //table_exec();
+            ajuste();
             document.getElementById('id_oficina').style.display = 'none';
         }
+
+        function ajuste() {
+            j('#tabela_pr').DataTable();
+            j('#tabela_pr').DataTable().columns.adjust();
+        }
+
+
         table_exec = () => {
             j('#tabela_pr').DataTable();
             j('#tabela_pr').DataTable().clear();
@@ -236,23 +289,24 @@
 
                 "language": datatable_pt_br,
                 "lengthMenu": [[10, 25, 50, 100], [10, 25, 50, 100]],
-                "pageLength": 10,
+                "pageLength": 10
             });
         }
 
         function visibilidadeModal(id, visibilidade, ofiID) {
             document.getElementById(id).style.display = visibilidade;
-            if(ofiID != null){
+            if (ofiID != null) {
                 document.getElementById('id_oficina').value = ofiID;
             }
-            if(visibilidade == 'none'){
+            if (visibilidade == 'none') {
                 document.getElementById('id_oficina').value = null;
             }
+
         }
 
         function salvarObs() {
             let v = document.getElementById('textareaInput').value;
-            let id = document.getElementById('id_oficina').value
+            let id = document.getElementById('id_oficina').value;
             parent.ebfFlowExecute('', parent.ebfListParamsCreate(v, id))
         }
 
