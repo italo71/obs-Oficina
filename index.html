@@ -85,6 +85,7 @@
 
         #btns_acoes {
             float: right;
+            margin: 5px 0 10px 0;
         }
 
         #btns_acoes_2 {
@@ -233,10 +234,10 @@
                     <textarea name="" id="textareaInput" cols="" rows=""></textarea>
                 </div>
                 <div class="col-12">
-                    <div class="col-3" id="btns_acoes">
-                        <div class="col-1"><button class="btn btn-danger"
+                    <div id="btns_acoes">
+                        <div style="display: inline-block;"><button class="btn btn-danger"
                                 onclick="visibilidadeModal('obs_modal', 'none')">Cancelar</button></div>
-                        <div class="col-1"><button class="btn btn-success" onclick="salvarObs()">Salvar</button></div>
+                        <div style="display: inline-block;"><button class="btn btn-success" onclick="salvarObs()">Salvar</button></div>
                     </div>
                 </div>
             </div>
@@ -250,13 +251,13 @@
                     <label for="">Observação</label>
                 </div>
                 <div class="col-12">
-                    <textarea name="" disable id="textareaOutput" cols="" rows=""></textarea>
+                    <textarea name="" disable id="textareaOutput" cols="" rows="" disabled></textarea>
                 </div>
                 <div class="col-12" id="btns_acoes_2">
-                    <div class="col-5" style="float:right;">
-                        <div class="col-7" style="display: inline-block;"><button class="btn btn-success"
+                    <div style="float: right; margin: 5px 0 10px 0;">
+                        <div style="display: inline-block;"><button class="btn btn-success"
                                 onclick="adicionarObs()">Adicionar nova Observação</button></div>
-                        <div class="col-1" style="display: inline-block;">
+                        <div style="display: inline-block;">
                             <button class="btn btn-danger"
                                 onclick="visibilidadeModal('obs_modal_2', 'none')">Fechar</button>
                         </div>
@@ -340,8 +341,8 @@
         }
 
         function adicionarObs() {
+            visibilidadeModal('obs_modal_2', 'none');
             visibilidadeModal('obs_modal', 'block');
-            visibilidadeModal('obs_modal_2', 'block');
             document.getElementById('textareaInput').value = '';
         }
 
