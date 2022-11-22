@@ -62,7 +62,6 @@
 
         #btn_buscar {
             padding: 5px 10px;
-            position: absolute;
             right: 15px;
             top: 10px;
         }
@@ -128,7 +127,7 @@
             <div class="row col-11" style="display: block;">
                 <div class="card col-12" id="card_1">
                     <div class="col-4" id="d_input_ccn">
-                        <input style="width: 100%;" type="text" placeholder="CNPJ / CPF / NOME">
+                        <input style="width: 100%;" id="cnpj_cpf_input" type="text" placeholder="CNPJ / CPF / NOME">
                     </div>
                     <div class="col-2" id="d_select">
                         <select name="" id="uf">
@@ -163,7 +162,8 @@
                         </select>
                     </div>
                     <div class="col-2">
-                        <button class="btn btn-success" id="btn_buscar">Buscar&nbsp&nbsp&nbsp<i
+                        <button class="btn btn-success" id="btn_buscar"
+                            onclick="buscarOficina()">Buscar&nbsp&nbsp&nbsp<i
                                 class="material-symbols-outlined">search</i></button>
                     </div>
                 </div>
@@ -194,16 +194,24 @@
         </div>
     </div>
 
-    <div class="modal" id="obs_modal_3" style="display: block;">
-        <div class="row justify-content-center">
+    <div class="modal" id="obs_modal_3">
+        <div class="row justify-content-center" style=" margin-top: 6px;">
             <div class="card col-11">
+                <div class="col-12" style="display: inline-block; padding-top: 5px;">
+                    <div style="float: right; width: 12%;">
+                        <div class="col-1" style="display: inline-block;"><button class="btn btn-success"
+                                onclick="adicionarObs()">Adicionar</button></div>
+                        <div class="col-1" style="display: inline-block;"><button class="btn btn-danger"
+                                onclick="visibilidadeModal('obs_modal_3','none')">Fechar</button></div>
+                    </div>
+                </div>
                 <div class="col-12">
                     <table class="table" id="tabela_pr_2">
                         <thead>
                             <tr>
                                 <th scope="col" class="th_table">#</th>
+                                <th scope="col" class="th_table">Usuário</th>
                                 <th scope="col" class="th_table">Data</th>
-                                <th scope="col" class="th_table">Usuario</th>
                                 <th scope="col" class="th_table">Observação</th>
                             </tr>
                         </thead>
@@ -214,8 +222,6 @@
             </div>
         </div>
     </div>
-
-    <button class="btn btn-success" onclick="visibilidadeModal('obs_modal', 'block')">teste</button>
 
     <div class="modal" id="obs_modal">
         <div class="row justify-content-center">
@@ -230,7 +236,7 @@
                     <div class="col-3" id="btns_acoes">
                         <div class="col-1"><button class="btn btn-danger"
                                 onclick="visibilidadeModal('obs_modal', 'none')">Cancelar</button></div>
-                        <div class="col-1"><button class="btn btn-success">Salvar</button></div>
+                        <div class="col-1"><button class="btn btn-success" onclick="salvarObs()">Salvar</button></div>
                     </div>
                 </div>
             </div>
@@ -244,12 +250,16 @@
                     <label for="">Observação</label>
                 </div>
                 <div class="col-12">
-                    <textarea name="" id="textareaOutput" cols="" rows=""></textarea>
+                    <textarea name="" disable id="textareaOutput" cols="" rows=""></textarea>
                 </div>
-                <div class="col-12">
-                    <div class="col-1" id="btns_acoes_2">
-                        <button class="btn btn-danger"
-                            onclick="visibilidadeModal('obs_modal_2', 'none')">Fechar</button>
+                <div class="col-12" id="btns_acoes_2">
+                    <div class="col-5" style="float:right;">
+                        <div class="col-7" style="display: inline-block;"><button class="btn btn-success"
+                                onclick="adicionarObs()">Adicionar nova Observação</button></div>
+                        <div class="col-1" style="display: inline-block;">
+                            <button class="btn btn-danger"
+                                onclick="visibilidadeModal('obs_modal_2', 'none')">Fechar</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -262,12 +272,17 @@
         window.onload = () => {
             //table_exec();
             ajuste();
+            ajuste_2();
             document.getElementById('id_oficina').style.display = 'none';
         }
 
         function ajuste() {
             j('#tabela_pr').DataTable();
             j('#tabela_pr').DataTable().columns.adjust();
+        }
+        function ajuste_2() {
+            j('#tabela_pr_2').DataTable();
+            j('#tabela_pr_2').DataTable().columns.adjust();
         }
 
 
@@ -293,21 +308,55 @@
             });
         }
 
+        function obterListaObs(ID) {
+            if (ID != null) {
+                document.getElementById('id_oficina').value = ID;
+                visibilidadeModal('obs_modal_3', 'block');
+            }
+            else {
+                ID = document.getElementById('id_oficina').value
+            }
+            parent.ebfFlowExecute('Observacao oficinas - Obter lista de observacoes', parent.ebfListParamsCreate(ID));
+        }
+
         function visibilidadeModal(id, visibilidade, ofiID) {
             document.getElementById(id).style.display = visibilidade;
             if (ofiID != null) {
                 document.getElementById('id_oficina').value = ofiID;
             }
-            if (visibilidade == 'none') {
+            if (visibilidade == 'none' && id == 'obs_modal_3') {
                 document.getElementById('id_oficina').value = null;
+                j('#tabela_pr_2').DataTable().clear();
+                j('#tabela_pr_2').DataTable().rows().invalidate().draw();
+                j('#tabela_pr_2').DataTable().destroy();
             }
 
+        }
+
+        function abrirObs(id) {
+            let obs = parent.ebfFlowExecute('Observacao oficinas - obter obs', parent.ebfListParamsCreate(id))
+            document.getElementById('textareaOutput').value = obs;
+            visibilidadeModal('obs_modal_2', 'block');
+        }
+
+        function adicionarObs() {
+            visibilidadeModal('obs_modal', 'block');
+            visibilidadeModal('obs_modal_2', 'block');
+            document.getElementById('textareaInput').value = '';
         }
 
         function salvarObs() {
             let v = document.getElementById('textareaInput').value;
             let id = document.getElementById('id_oficina').value;
-            parent.ebfFlowExecute('', parent.ebfListParamsCreate(v, id))
+            let teste = parent.ebfFlowExecute('Observacao oficinas - Salvar obs', parent.ebfListParamsCreate(v, id));
+            if (teste)
+                visibilidadeModal('obs_modal', 'none');
+        }
+
+        function buscarOficina() {
+            let cnpj = document.getElementById('cnpj_cpf_input').value;
+            let uf = document.getElementById('uf').value
+            parent.ebfFlowExecute('Observacao oficinas - retornas oficinas', parent.ebfListParamsCreate(cnpj, uf));
         }
 
     </script>
